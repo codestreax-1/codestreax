@@ -1,6 +1,6 @@
 'use client'
 import Editor from '@monaco-editor/react';
-import React, { useState } from 'react'
+import { useState,useEffect } from 'react'
 import SplitPane, { Pane } from 'split-pane-react';
 import Styles from './problem.module.css';
 import 'split-pane-react/esm/themes/default.css'
@@ -38,17 +38,25 @@ const splitpane = () => {
         "auto",
         '55%',
     ]);
+
+    const [screenSize, setScreenSize] = useState<Window>();
+
+    useEffect(() => {
+        setScreenSize(window);
+    }, []);
+    
     const layoutCSS = {
         height: '100%',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
     };
+
     return (
         <div style={{ height:"calc(100vh - 4rem)"}} >
             <SplitPane
             className={Styles.wrapper}
-                split='vertical'
+                split= {screenSize != null  && screenSize!.innerWidth > 768 ? 'vertical' : 'horizontal'}
                 sizes={sizes}
                 onChange={(newsize: any) => setSizes(newsize)}>
                 <Pane minSize='30%' maxSize='70%'>
@@ -80,3 +88,4 @@ const splitpane = () => {
 }
 
 export default splitpane
+
